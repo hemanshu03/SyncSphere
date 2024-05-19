@@ -1,0 +1,143 @@
+body {
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    color: white;
+    background-color: #000000;
+    margin: 0;
+    overflow: scroll;
+}
+
+.info-panel {
+    padding: 20px;
+    width: 50%;
+    padding-left: 2%;
+    padding-right: 2%;
+    margin-top: 10%;
+    float: left;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.login-panel {
+    background: linear-gradient(to right top, #000000, #011b47, #0251b5, #909eff);
+    padding: 20px;
+    width: 30%;
+    margin-right: 5%;
+    margin-top: 10%;
+    float: right;
+    border-radius: 15px;
+    box-sizing: border-box;
+    animation: slideInRight 2s ease-in-out;
+    min-width: 300px;
+}
+
+h1,
+h2 {
+    color: white;
+}
+
+input[type=text],
+input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-size: 14px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button#refresh_cptch {
+    width: max-content;
+    margin: 5px;
+    border-radius: 5px;
+    background: black;
+}
+
+button:hover {
+    transform: scale(1.01);
+}
+
+
+
+@media only screen and (max-width: 800px) {
+    body {
+        font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+        color: white;
+        background-color: #000000;
+        margin: 0;
+        overflow-y: scroll;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        overflow-x: hidden;
+        padding-bottom: 50px;
+        padding-top: 20px;
+    }
+
+    body .info-panel,
+    body .login-panel {
+        width: 100%;
+        float: none;
+        margin-top: 10px;
+
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-bottom: 30px;
+    }
+
+    body .info-panel {
+        margin-top: 60px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@media only screen and (max-width: 800px) {
+
+    .info-panel,
+    .login-panel {
+        width: 100%;
+        float: none;
+        margin: 10px;
+    }
+
+    .info-panel {
+        margin-top: 60px;
+    }
+
+    button#create-btn {
+        margin-right: 10px;
+    }
+}

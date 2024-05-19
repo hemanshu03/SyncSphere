@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{user}} - {{ code }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/room_inside.css') }}">
+    <!--<link rel="stylesheet" type="text/css" href="R:\TY_miniproject\SyncSphere\Refresh_7\static\css\room_inside.css">-->
+</head>
+
+<body>
+    <div id="loading-spinner"></div>
+    <div id="side-menu">
+        {% for room in rooms %}
+        <a onclick="changeroom('{{ room }}')">{{ room }}</a>
+        {% endfor %}
+    </div>
+
+    <span id="menu-btn" onclick="toggleSideMenu()">&#9776; Show all rooms</span>
+    <div class="centered-container">
+        <h1 class="animate__animated animate__fadeInDown" id="room-header"> Room -<label id="header-code">{{ code
+                }}</label></h1>
+        <button class="animate__animated animate__fadeInUp" id="logout" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="animate__animated animate__fadeInUp" id="message_Search">   
+        <input type="text" id="searchmessage" placeholder="Search message content">
+        <input type="checkbox" id="caseSensitiveCheckbox">
+        <label for="caseSensitiveCheckbox">Case Sensitive</label>
+        <span id="searchCount" style="margin-left: 10px;"></span>
+
+        <div id="file_manager" style="display: contents;">
+            <label style="padding-right: 10px;"> | Upload/Download files: </label>
+            <input
+                style="margin-bottom: 0px; padding: 5px; background-color: transparent; max-width: fit-content; cursor: pointer; border: 1px solid white; color: white;"
+                type="file" name="files[]" id="upload-button" multiple>
+            <input style="margin-bottom: 0px;" type="submit" value="Upload" class="custom-button" id="upload-button--">
+            <button type="button" class="custom-button" id="showFilesBtn" onclick="showFiles()">Show Files in this
+                room</button>
+            <button id="showParticipantsBtn" style="display: none;">Show Participants</button>
+            <!--<button type="button" class="part_buts" id="part-buts">Hover over me</button>
+                <div class="childDivision" id="child_div">This is a child division</div>-->
+        </div>
+        <img style="width: 25px; margin-left: 20px; cursor: pointer;" title="Get information of the room (Participants, creation time, etc.)" src="{{ url_for('static', filename='images/r_info.png') }}"" onclick="get_partis()" id="parti_show">
+    </div>
+    <div id="rinfoModal" style="overflow: auto;">
+        <div id="partiContent">
+            <span class="close" onclick="closerinfoModal()">&times;</span>
+            <div id="rinfo">
+                Room info: <br><br>
+                This room is here for testing purposes. We are right now making sure that you all get the best experience of the UI we are making. Sit tight to see the changes soon :) <br>
+                This room was created in December of the year 2023
+            </div>
+            <h2 style="color: orange;">Users in the Room</h2>
+            <label id="parti_count"></label>
+            <div id="container">
+                <div id="partiList"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="messages animate__animated animate__fadeInUp" id="message-box">
+        {%- for message in messages -%}
+        <div class="message-container" id="{{ message.message_id }}">
+            {%- if message.name == user -%}
+            <div class="message-current-user">
+                <div class="message-current">
+                    <strong class="user_name" , Optima, Arial, sans-serif;">You<br></strong>
+                    <br><label class="msg" style="user-select: text; margin-bottom: 30px;"
+                        id="msg{{ message.message_id }}"> </label><br>
+                    <span class="muted" style="float: right; color: #90b584;">
+                        <button class="delete-btn" onclick="delete_msg_event(this)" title="Delete This Message"">
+                            <!--<img src=" {{ url_for('static', filename='images/delete.png' ) }}" alt="Icon">-->Delete
+                            Message</button>|
+                        <button class="translate-btn" onclick="set_button(this)"
+                            title="Translate This Message to English"
+                            style="background-color: transparent; border: none; cursor: pointer; color: white;">
+                            <!--<img src="{{ url_for('static', filename='images/translate.png') }}" alt="Icon">-->Translate</button>|
+                        {{
+                        message.timestamp }}</span>
+                </div>
+            </div>
+            {%- else -%}
+            <div class="message-other-user">
+                <div class="message-other">
+                    <strong class="user_name" , Optima, Arial, sans-serif;">{{ message.name }}<br></strong>
+                    <br><label class="msg" style="user-select: text;" id="msg{{ message.message_id }}"> </label><br>
+                    <span class="muted" style="float: right; color: #6ea3a7;">
+                        <!--<button class="delete-btn" onclick="delete_msg_event(this)" title="Delete This Message"
+                            style="background-color: transparent; border: none; cursor: pointer;">
+                            <img src="{{ url_for('static', filename='images/delete.png') }}" alt="Icon"></button>|-->
+                        <button class="translate-btn" onclick="set_button(this)"
+                            title="Translate This Message to English"
+                            style="background-color: transparent; border: none; cursor: pointer; color: white;">
+                            <!--<img src="{{ url_for('static', filename='images/translate.png') }}" alt="Icon">-->Translate</button>|
+                        {{
+                        message.timestamp }}</span>
+                </div>
+            </div>
+            {%- endif -%}
+        </div>
+        {%- endfor -%}
+    </div>
+
+
+    <form class="animate__animated animate__fadeInUp" id="message-form" method="POST" enctype="multipart/form-data">
+        <button id="top-it-up" title="Scroll to top" onclick="scroll_to_top(event)">↑</button>
+        <textarea id="message-input" placeholder="Type your message here, {{user}}" onkeydown="handleKeyPress(event)"
+            rows="4"></textarea>
+        <button type="button"
+            style="cursor: pointer; margin-left: 5px; font-weight: bolder; color: white; background-color: rgb(0, 140, 255); border: none; padding: 7px; width: 70px"
+            onclick="sendMessage()">Send</button>
+    </form>
+
+    <div id="fileModal">
+        <div id="fileContent">
+            <span class="close" onclick="closeFilesModal()">&times;</span>
+            <h2 style="color: orange;">Files in the Room</h2>
+            <label id="file_count"></label>
+
+            <div id="container">
+                <div id="fileList"></div>
+            </div>
+            <a href="multiple/{{ code }}" download>
+                <button id="download-multiple" class="download-multiple">Download
+                    selected
+                    files
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Participant modal popup -->
+    <div id="participantModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Participants in the Room:</h2>
+            <ul id="participant-list">
+                <!-- Participant names will be dynamically added here -->
+            </ul>
+        </div>
+    </div>
+
+    <!--<div id="fileModal">
+        <div id="fileContent">
+            <span class="close" onclick="closeFilesModal()">&times;</span>
+            <h2 style="color: orange;">Files in the Room</h2>
+            <input type="text" id="searchInput" onkeyup="filterFiles()" placeholder="Search for files...">
+            <label id="file_count"></label>
+            <div id="container">
+                <div id="fileList"></div>
+            </div>
+            <a href="multiple/{{ code }}" download>
+                <button id="download-multiple" class="download-multiple">Download selected files</button>
+            </a>
+        </div>
+    </div>-->
+
+    <div id="languagePopup" class="popup-content">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <label for="languagePopup"
+            style=" display: grid; font-size: x-large; color: orange; justify-content: center;">Translate Menu</label>
+        <div class="dropdown">
+            <input type="text" id="searchInput" onkeyup="filterLanguages()" placeholder="Search for your language...">
+            <div id="languageDropdown" class="dropdown-content">
+                <!-- Language options will be added dynamically here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/room_handler_JS_original.js') }}"></script>
+    <!--<script src="R:\TY_miniproject\SyncSphere\Refresh_7\static\js\room_handler_JS_original.js"></script>-->
+    <script>
+        function store_creds() {
+            var room_cd = "{{ code }}";
+            var usernm = "{{ user }}";
+            localStorage.setItem("room_code", room_cd);
+            room_code = localStorage.getItem('room_code');
+            localStorage.setItem("user", usernm);
+            showFiles(0);
+            //socket.emit('here_it_is', { room_code: (localStorage.getItem('room_code')), usnm: (sessionStorage.getItem("username")) });
+        }
+
+        const del_ico = "{{ url_for('static', filename='images/delete.png') }}";
+        const translate_ico = "{{ url_for('static', filename='images/translate.png') }}";
+
+        window.onload = async function () {
+            console.log('%cAttention!', 'font-size: 80px; font-weight: bold; color: red;');
+            console.log('%cImportant Notice: Please refrain from accessing developer options or modifying the code of this website. Doing so may compromise your security and the integrity of the site. Please go through the terms and conditions to use of website on the home page for more information. If you have any questions or concerns, please contact our support team for assistance at "noreply.lanchatting@gmail.com"', 'font-size: 20px; font-weight: normal; color: orange;');
+
+            {% for message in messages %}
+            var ciphertext = "{{ message.message }}";
+            var decryptedMessage = await aesDecrypt(ciphertext);
+            document.getElementById("msg{{ message.message_id }}").innerText = decryptedMessage;
+            {% endfor %}
+            var element = document.getElementById('message-box');
+            if (element) {
+                element.scrollTop = element.scrollHeight;
+            }
+            showFiles(files_flag = 0);
+        }
+    </script>
+</body>
+
+</html>

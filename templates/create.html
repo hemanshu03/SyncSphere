@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>SyncSphere</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/create.css') }}">
+</head>
+
+<body onload="clear_browser()">
+    <div class="info-panel" style="font-size: larger;">
+        <h1 style="text-align: center;">Welcome to SyncSphere</h1>
+        <li>Use a unique and decent username.</li>
+        <li>Make sure to enter the e-mail ID correctly since an OTP will be sent to you to verify your e-mail ID.</li>
+        <li>Password must be of 8 characters containing:</li>
+        <ul style="font-family: Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;">
+            <li>Special characters like ( . @ # $ % ^ & * _ - ) only.</li>
+            <li>At least one uppercase (“ABCD..”).</li>
+            <li>At least one lowercase (“abcd..”) character.</li>
+            <li>At least one number.</li>
+            <p>*This is for your own safety. Please co-operate.</p>
+        </ul>
+    </div>
+
+    <noscript>
+        <p>JavaScript is disabled. Please enable JavaScript to continue.</p>
+        <!-- You can include a meta refresh tag to redirect users to another page -->
+        <meta http-equiv="refresh" content="0;url=/nojs">
+    </noscript>
+
+    <div id="combined-form" class="create-panel">
+        <h2 style="font-size: x-large; text-align: center;">Create Account</h2>
+
+        <!-- Initial form for checking username -->
+        <form id="initial-form" onsubmit="return checkUsername()">
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <button type="button" onclick="checkUsername()">Check Username</button>
+        </form>
+
+        <div id="loading-spinner"></div>
+
+        <form id="email-form" style="display: none;" onsubmit="return validateForm()">
+            <input style="color: gray; background-color: black; border: none;" type="text" id="username-full" name="username" placeholder="Username" required disabled>
+            <input type="email" id="email-full" name="email" placeholder="Email" required>
+            <button type="button" onclick="validateEmail()">Verify Your E-Mail</button>
+        </form>
+
+        <!-- OTP verification form (hidden by default) -->
+        <form id="otp-veri" style="display: none;" onsubmit="return validateOtp()">
+            <input type="text" id="otp__" name="otp" placeholder="Enter OTP" required>
+            <button type="button" onclick="validateOtp()">Validate OTP</button>
+        </form>
+
+        <!-- Full registration form (hidden by default) -->
+        <form id="v-full-registration-form" style="display: none;" onsubmit="return validateForm()">
+            <input style="color: gray; background-color: black; border: none;" type="text" id="username-full_" name="username" required disabled>
+            <input style="color: gray; background-color: black; border: none;" type="email" id="email-full_" name="email" required disabled>
+            <div style="position: relative;">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <input type="checkbox" onclick="togglePasswordVisibility()"> Show Password
+            </div>
+            <span>
+                <label_captcha style="font-size: large;">Captcha: </label_captcha>
+                <span><img id="captchaImage" src="data:image/png;base64,{{ captcha_image }}" alt="Captcha Image">
+                    <button style="width: max-content; margin:5px; border-radius: 5px; background: black;" type="button"
+                        onclick="refreshCaptcha()">Refresh Captcha</button></span>
+            </span>
+            <input type="text" id="captcha" name="captcha" placeholder="Enter Captcha" required oninput="this.value = this.value.toUpperCase()">
+            <button type="button" onclick="validateForm()">Create Account</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.0.2/sha.js"></script>
+    <script src="{{ url_for('static', filename='js/create.js') }}"></script>
+    <script>
+    </script>
+</body>
+
+</html>

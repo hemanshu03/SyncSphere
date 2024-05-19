@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Hover Event</title>
+    <style>
+        .part_buts {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .childDivision {
+            z-index: 1;
+            cursor: default;
+            border-radius: 10px;
+            display: none;
+            position: absolute;
+            top: 7.2%;
+            padding: 10px;
+            width: 250px;
+            background-color: #0000007d;
+            color: #fff;
+            /* Add opacity to the child division */
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* Create the triangular pointer */
+        .childDivision::after {
+            content: '';
+            position: absolute;
+            top: -19.73px;
+            left: 7%;
+            transform: translateX(-50%);
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent #0000007d transparent;
+            transition: opacity 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <button type="button" class="part_buts" id="part-buts">Hover over me</button>
+    <div class="childDivision" id="child_div">This is a child division</div>
+
+    <script>
+        var button = document.getElementById('part-buts');
+        var childDivision = document.getElementById('child_div');
+        var timer;
+
+        button.addEventListener('mouseenter', function () {
+            timer = setTimeout(function () {
+                childDivision.style.display = 'block';
+                childDivision.style.opacity = '1'; // This line triggers the fade-in effect
+            }, 500);
+        });
+        
+
+        button.addEventListener('mouseleave', function (event) {
+            clearTimeout(timer);
+            childDivision.style.opacity = '0';
+            setTimeout(function () {
+                if (!isMouseOver(childDivision, event)) {
+                    childDivision.style.display = 'none';
+                }
+            }, 500);
+        });
+
+        // Function to check if the mouse is over an element
+        function isMouseOver(element, event) {
+            var rect = element.getBoundingClientRect();
+            return (event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom);
+        }
+
+        // Add event listeners to child division to handle mouse events
+        childDivision.addEventListener('mouseenter', function () {
+            clearTimeout(timer);
+        });
+
+        childDivision.addEventListener('mouseleave', function () {
+            childDivision.style.opacity = '0';
+            setTimeout(function () {
+                childDivision.style.display = 'none';
+            }, 500);
+        });
+    
+    </script>
+</body>
+</html>

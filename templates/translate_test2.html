@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Selection Popup</title>
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .popup-content {
+            background-color: #fefefe;
+            margin: 20% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+        }
+
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Styles for the language selection dropdown */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .show {
+            display: block;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Button to open the language selection popup -->
+    <button onclick="openPopup()">Select Languages</button>
+
+    <!-- Language selection popup -->
+    <div id="languagePopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <div class="dropdown">
+                <button onclick="toggleDropdown()">Select Language</button>
+                <div id="languageDropdown" class="dropdown-content">
+                    <input type="text" id="searchInput" onkeyup="filterLanguages()"
+                        placeholder="Search for languages...">
+                    <!-- Language options will be added dynamically here -->
+                </div>
+            </div>
+            <button onclick="applyLanguages()">Apply</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to open the language selection popup
+        function openPopup() {
+            document.getElementById('languagePopup').style.display = 'block';
+        }
+
+        // Function to close the language selection popup
+        function closePopup() {
+            document.getElementById('languagePopup').style.display = 'none';
+        }
+
+        // Function to apply selected languages
+        function applyLanguages() {
+            var fromLanguage = document.getElementById('fromLanguage').value;
+            var toLanguage = document.getElementById('toLanguage').value;
+            // You can perform further actions with selected languages here
+            console.log("From Language:", fromLanguage);
+            console.log("To Language:", toLanguage);
+            closePopup(); // Close the popup after applying languages
+        }
+
+        // Array of languages for the dropdown
+        var languages = [
+            "Afrikaans", "Albanian", "Amharic", "Arabic", "Armenian", "Azerbaijani", "Basque", "Belarusian", "Bengali",
+            "Bosnian", "Bulgarian", "Catalan", "Cebuano", "Chichewa", "Chinese (Simplified)", "Chinese (Traditional)",
+            "Corsican", "Croatian", "Czech", "Danish", "Dutch", "English", "Esperanto", "Estonian", "Filipino", "Finnish",
+            "French", "Frisian", "Galician", "Georgian", "German", "Greek", "Gujarati", "Haitian Creole", "Hausa", "Hawaiian",
+            "Hebrew", "Hindi", "Hmong", "Hungarian", "Icelandic", "Igbo", "Indonesian", "Irish", "Italian", "Japanese", "Javanese",
+            "Kannada", "Kazakh", "Khmer", "Kinyarwanda", "Korean", "Kurdish (Kurmanji)", "Kyrgyz", "Lao", "Latin", "Latvian",
+            "Lithuanian", "Luxembourgish", "Macedonian", "Malagasy", "Malay", "Malayalam", "Maltese", "Maori", "Marathi",
+            "Mongolian", "Myanmar (Burmese)", "Nepali", "Norwegian", "Pashto", "Persian", "Polish", "Portuguese", "Punjabi",
+            "Romanian", "Russian", "Samoan", "Scots Gaelic", "Serbian", "Sesotho", "Shona", "Sindhi", "Sinhala", "Slovak",
+            "Slovenian", "Somali", "Spanish", "Sundanese", "Swahili", "Swedish", "Tajik", "Tamil", "Telugu", "Thai", "Turkish",
+            "Ukrainian", "Urdu", "Uzbek", "Vietnamese", "Welsh", "Xhosa", "Yiddish", "Yoruba", "Zulu"
+        ];
+
+        // Maintain a mapping of language names to their codes
+        var languageCodes = {
+            "Afrikaans": "af",
+            "Albanian": "sq",
+            "Amharic": "am",
+            "Arabic": "ar",
+            "Armenian": "hy",
+            "Azerbaijani": "az",
+            "Basque": "eu",
+            "Belarusian": "be",
+            "Bengali": "bn",
+            "Bosnian": "bs",
+            "Bulgarian": "bg",
+            "Catalan": "ca",
+            "Cebuano": "ceb",
+            "Chichewa": "ny",
+            "Chinese (Simplified)": "zh-CN",
+            "Chinese (Traditional)": "zh-TW",
+            "Corsican": "co",
+            "Croatian": "hr",
+            "Czech": "cs",
+            "Danish": "da",
+            "Dutch": "nl",
+            "English": "en",
+            "Esperanto": "eo",
+            "Estonian": "et",
+            "Filipino": "tl",
+            "Finnish": "fi",
+            "French": "fr",
+            "Frisian": "fy",
+            "Galician": "gl",
+            "Georgian": "ka",
+            "German": "de",
+            "Greek": "el",
+            "Gujarati": "gu",
+            "Haitian Creole": "ht",
+            "Hausa": "ha",
+            "Hawaiian": "haw",
+            "Hebrew": "he",
+            "Hindi": "hi",
+            "Hmong": "hmn",
+            "Hungarian": "hu",
+            "Icelandic": "is",
+            "Igbo": "ig",
+            "Indonesian": "id",
+            "Irish": "ga",
+            "Italian": "it",
+            "Japanese": "ja",
+            "Javanese": "jv",
+            "Kannada": "kn",
+            "Kazakh": "kk",
+            "Khmer": "km",
+            "Kinyarwanda": "rw",
+            "Korean": "ko",
+            "Kurdish (Kurmanji)": "ku",
+            "Kyrgyz": "ky",
+            "Lao": "lo",
+            "Latin": "la",
+            "Latvian": "lv",
+            "Lithuanian": "lt",
+            "Luxembourgish": "lb",
+            "Macedonian": "mk",
+            "Malagasy": "mg",
+            "Malay": "ms",
+            "Malayalam": "ml",
+            "Maltese": "mt",
+            "Maori": "mi",
+            "Marathi": "mr",
+            "Mongolian": "mn",
+            "Myanmar (Burmese)": "my",
+            "Nepali": "ne",
+            "Norwegian": "no",
+            "Pashto": "ps",
+            "Persian": "fa",
+            "Polish": "pl",
+            "Portuguese": "pt",
+            "Punjabi": "pa",
+            "Romanian": "ro",
+            "Russian": "ru",
+            "Samoan": "sm",
+            "Scots Gaelic": "gd",
+            "Serbian": "sr",
+            "Sesotho": "st",
+            "Shona": "sn",
+            "Sindhi": "sd",
+            "Sinhala": "si",
+            "Slovak": "sk",
+            "Slovenian": "sl",
+            "Somali": "so",
+            "Spanish": "es",
+            "Sundanese": "su",
+            "Swahili": "sw",
+            "Swedish": "sv",
+            "Tajik": "tg",
+            "Tamil": "ta",
+            "Telugu": "te",
+            "Thai": "th",
+            "Turkish": "tr",
+            "Ukrainian": "uk",
+            "Urdu": "ur",
+            "Uzbek": "uz",
+            "Vietnamese": "vi",
+            "Welsh": "cy",
+            "Xhosa": "xh",
+            "Yiddish": "yi",
+            "Yoruba": "yo",
+            "Zulu": "zu"
+        };
+
+
+        var dropdownContent = document.getElementById("languageDropdown");
+
+        function filterLanguages() {
+            var input, filter, a, i;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            for (i = 0; i < languages.length; i++) {
+                a = dropdownContent.children[i + 1]; // +1 to skip search input
+                if (a) {
+                    if (languages[i].toUpperCase().indexOf(filter) > -1) {
+                        a.style.display = "";
+                    } else {
+                        a.style.display = "none";
+                    }
+                }
+            }
+        }
+
+        function populateDropdown() {
+            for (var i = 0; i < languages.length; i++) {
+                var a = document.createElement("a");
+                a.textContent = languages[i];
+                a.setAttribute("onclick", "selectLanguage('" + languages[i] + "')");
+                dropdownContent.appendChild(a);
+            }
+        }
+
+        // Function to toggle dropdown
+        function toggleDropdown() {
+            var dropdown = document.getElementById("languageDropdown");
+            populateDropdown();
+            dropdown.classList.toggle("show");
+        }
+
+        // Function to select language
+        function selectLanguage(language) {
+            var code = languageCodes[language];
+            console.log("Selected Language: " + language + " (Code: " + code + ")");
+            toggleDropdown();
+        }
+
+    </script>
+
+</body>
+
+</html>

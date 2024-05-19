@@ -1,0 +1,225 @@
+body {
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    /*background: linear-gradient(to top, #000000, #8103ce  );*/
+    background: linear-gradient(241deg, #00317e, #00112d, #35008c);
+    background-size: 180% 180%;
+    animation: gradient-animation 15s ease infinite;
+    color: #fff;
+    margin: 0;
+    overflow-y: auto;
+}
+
+
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+header {
+    user-select: none;
+    background-attachment: fixed;
+    background: linear-gradient(to bottom, #000000, #00000000);
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+h1 {
+    font-family: Arial Rounded MT;
+    margin: 0px;
+    margin-right: 5px;
+}
+
+button {
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    background-color: #1a1a1a;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background-color: rgb(46, 46, 46) !important;
+    /* Change to your desired hover color */
+    transform: scale(1.1);
+}
+
+#logo {
+    margin-right: auto;
+    max-width: 50px;
+    /* Set a maximum width for the logo */
+    animation: fadeInUp 1s ease-out;
+}
+
+img {
+    width: 100%;
+    /* Make sure the image fills its container */
+    height: auto;
+    /* Maintain aspect ratio */
+}
+
+button#create-account,
+button#login {
+    margin-left: 10px;
+    background: #4b4b4b;
+    /* Adds margin between the login and create buttons */
+    animation: fadeInRight 1s ease-out;
+}
+
+button#support {
+    background: #272424;
+    width: fit-content;
+    animation: fadeInUp 1s ease-out;
+    margin-right: 50px;
+    height: fit-content;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+    opacity: 0;
+    animation: fadeIn 1s ease-out, slideIn 1s ease-out;
+    animation-fill-mode: forwards;
+}
+
+#info,
+#images {
+    user-select: none;
+    border: 2px solid #ffffff2e;
+    background-color: #ffffff1f;
+    border-radius: 15px;
+    padding: 20px;
+    width: 45%;
+    margin-bottom: 20px;
+    /* height: calc(100vh - 270px); */
+    height: fit-content;
+}
+
+
+#centered_border {
+    width: 98%;
+    margin: 0 auto;
+    border: 0.5px solid #a6a6a6;
+    box-sizing: border-box;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    position: relative;
+    /* width: 97.3%; */
+    background: linear-gradient(to top, black, transparent);
+}
+
+#contact,
+#support {
+    width: 45%;
+    animation: fadeInUp 1s ease-out;
+}
+
+@media screen and (max-width: 800px) {
+
+    main {
+        flex-direction: column;
+    }
+
+    #support,
+    #contact {
+        width: fit-content;
+        margin: auto;
+    }
+
+    #support {
+        height: fit-content;
+    }
+
+    #info,
+    #images {
+        width: 100%;
+        height: fit-content;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    button {
+        margin: 0;
+        /* Remove margin for buttons */
+        margin-bottom: 10px;
+        /* Add margin between buttons */
+    }
+
+    button#create-account {
+        margin-right: 0;
+        /* Add right margin for create account button */
+        margin-left: 0;
+    }
+}
+
+/* Keyframe animations for fade and slide effects */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

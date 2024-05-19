@@ -1,0 +1,94 @@
+body {
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    color: white;
+    background-color: #000000;
+    margin: 0;
+    overflow: auto;
+}
+
+.info-panel {
+    padding: 20px;
+    width: 50%;
+    padding-left: 2%;
+    padding-right: 2%;
+    margin-top: 10%;
+    float: left;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.create-panel {
+    background: linear-gradient(to right top, #000000, #011b47, #0251b5, #909eff);
+    padding: 20px;
+    width: 30%;
+    margin-right: 5%;
+    margin-top: 10%;
+    float: right;
+    border-radius: 15px;
+    box-sizing: border-box;
+    animation: slideInRight 2s ease-in-out;
+}
+
+h1,
+h2 {
+    color: white;
+}
+
+input[type=text],
+input[type=email],
+input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-size: 14px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+@media only screen and (max-width: 800px) {
+    .info-panel,
+    .create-panel {
+        width: 100%;
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .info-panel {
+        margin-top: 60px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}

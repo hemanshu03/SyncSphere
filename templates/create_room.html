@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Room</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 50%;
+        margin: 50px auto;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="password"],
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .checkbox {
+        margin-top: 5px;
+    }
+    .tag {
+        display: inline-block;
+        background-color: #f0f0f0;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+    .tag .remove-tag {
+        cursor: pointer;
+        margin-left: 5px;
+        color: red;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Create Room</h2>
+    <form action="#" method="post">
+        <div class="form-group">
+            <label for="roomName">Enter name for your room:</label>
+            <input type="text" id="roomName" name="roomName" required>
+        </div>
+        <div class="form-group">
+            <label for="roomPassword">Enter password for your room:</label>
+            <input type="password" id="roomPassword" name="roomPassword" required>
+            <input type="checkbox" id="showRoomPassword" onclick="showHidePassword('roomPassword')"> <label for="showRoomPassword">Show/Hide password</label>
+        </div>
+        <div class="form-group">
+            <label for="accountPassword">Enter your account password:</label>
+            <input type="password" id="accountPassword" name="accountPassword" required>
+            <input type="checkbox" id="showAccountPassword" onclick="showHidePassword('accountPassword')"> <label for="showAccountPassword">Show/Hide password</label>
+        </div>
+        <div class="form-group">
+            <label for="usernames">Enter the list of usernames to associate with your room (hit enter to note each user):</label>
+            <div id="usernames-list" style="float: inline-start; border: 1px solid black"><input id="usernames" name="usernames" rows="4" style="float: inline-end; border: none"></div>
+        </div>
+        <div class="container">
+            <label>Users:</label>
+            
+        </div>
+        <div class="form-group">
+            <label for="admins">Enter admins for your room:</label>
+            <input id="admins" name="admins" rows="2">
+        </div>
+        <div class="container"></div>
+            <label>Admins:</label>
+            <div id="admins-list"></div>
+        </div>
+        <button type="submit">Create Room</button>
+    </form>
+</div>
+
+
+
+<script>
+    function showHidePassword(inputId) {
+        var x = document.getElementById(inputId);
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
+    // Function to add tag to the list
+    function addTag(inputId, listId) {
+        var input = document.getElementById(inputId);
+        var list = document.getElementById(listId);
+
+        if (input.value.trim() !== "") {
+            var tag = document.createElement("span");
+            tag.className = "tag";
+            tag.textContent = input.value.trim();
+            
+            var removeButton = document.createElement("span");
+            removeButton.className = "remove-tag";
+            removeButton.textContent = "✖";
+            removeButton.onclick = function() {
+                list.removeChild(tag);
+            };
+            tag.appendChild(removeButton);
+
+            list.appendChild(tag);
+            input.value = "";
+        }
+    }
+
+    // Event listener for Enter key press in textareas
+    document.getElementById("usernames").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            addTag("usernames", "usernames-list");
+            event.preventDefault(); // Prevent form submission
+        }
+    });
+
+    document.getElementById("admins").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            addTag("admins", "admins-list");
+            event.preventDefault(); // Prevent form submission
+        }
+    });
+</script>
+
+</body>
+</html>

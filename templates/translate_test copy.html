@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language Selection Popup</title>
+  <style>
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      cursor: pointer;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    .show {
+      display: block;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+<div class="dropdown">
+  <button onclick="toggleDropdown()">Select Language</button>
+  <div id="languageDropdown" class="dropdown-content">
+    <input type="text" id="searchInput" onkeyup="filterLanguages()" placeholder="Search for languages...">
+    <!-- Language options will be added dynamically here -->
+  </div>
+</div>
+
+<script>
+  var languages = [
+    "Afrikaans", "Albanian", "Amharic", "Arabic", "Armenian", "Azerbaijani", "Basque", "Belarusian", "Bengali", 
+    "Bosnian", "Bulgarian", "Catalan", "Cebuano", "Chichewa", "Chinese (Simplified)", "Chinese (Traditional)", 
+    "Corsican", "Croatian", "Czech", "Danish", "Dutch", "English", "Esperanto", "Estonian", "Filipino", "Finnish", 
+    "French", "Frisian", "Galician", "Georgian", "German", "Greek", "Gujarati", "Haitian Creole", "Hausa", "Hawaiian", 
+    "Hebrew", "Hindi", "Hmong", "Hungarian", "Icelandic", "Igbo", "Indonesian", "Irish", "Italian", "Japanese", "Javanese", 
+    "Kannada", "Kazakh", "Khmer", "Kinyarwanda", "Korean", "Kurdish (Kurmanji)", "Kyrgyz", "Lao", "Latin", "Latvian", 
+    "Lithuanian", "Luxembourgish", "Macedonian", "Malagasy", "Malay", "Malayalam", "Maltese", "Maori", "Marathi", 
+    "Mongolian", "Myanmar (Burmese)", "Nepali", "Norwegian", "Pashto", "Persian", "Polish", "Portuguese", "Punjabi", 
+    "Romanian", "Russian", "Samoan", "Scots Gaelic", "Serbian", "Sesotho", "Shona", "Sindhi", "Sinhala", "Slovak", 
+    "Slovenian", "Somali", "Spanish", "Sundanese", "Swahili", "Swedish", "Tajik", "Tamil", "Telugu", "Thai", "Turkish", 
+    "Ukrainian", "Urdu", "Uzbek", "Vietnamese", "Welsh", "Xhosa", "Yiddish", "Yoruba", "Zulu"
+  ];
+
+  var dropdownContent = document.getElementById("languageDropdown");
+
+  // Function to filter languages based on search input
+  function filterLanguages() {
+    var input, filter, a, i;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    for (i = 0; i < languages.length; i++) {
+      a = dropdownContent.children[i + 1]; // +1 to skip search input
+      if (languages[i].toUpperCase().indexOf(filter) > -1) {
+        a.style.display = "";
+      } else {
+        a.style.display = "none";
+      }
+    }
+  }
+
+  // Function to populate dropdown with languages
+  function populateDropdown() {
+    for (var i = 0; i < languages.length; i++) {
+      var a = document.createElement("a");
+      a.textContent = languages[i];
+      a.setAttribute("onclick", "selectLanguage('" + languages[i] + "')");
+      dropdownContent.appendChild(a);
+    }
+  }
+
+  // Function to toggle dropdown
+  function toggleDropdown() {
+    var dropdown = document.getElementById("languageDropdown");
+    dropdown.classList.toggle("show");
+  }
+
+  // Function to select language
+  function selectLanguage(language) {
+    alert("Selected Language: " + language);
+    // You can perform further actions with the selected language here
+    toggleDropdown(); // Close the dropdown after selecting language
+  }
+
+  // Populate the dropdown initially
+  populateDropdown();
+</script>
+
+</body>
+</html>

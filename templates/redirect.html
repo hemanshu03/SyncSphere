@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: black;
+            font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+        #message{
+            text-align: center;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<h2>Redirecting</h2>
+
+<div class="loader"></div>
+<div id="message">
+    <p id="countdown">Redirecting to {{location_}} page...<br>(Please allow pop-ups for this website manually if you don't get redirected automatically within 3 seconds)</p>
+</div>
+<script>
+    var timeleft = 2;
+    var countdownTimer = setInterval(function(){
+        timeleft--;
+        if(timeleft <= 0){
+            clearInterval(countdownTimer);
+            //document.getElementById("countdown").textContent = "Redirecting...";
+            window.location.href = "{{link__}}"; // replace with your URL
+            //window.open("https://{{link__}}", "_blank");
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Form</title>
+</head>
+<style>
+    body {
+        background-color: #1f1f1f;
+        color: #fff;
+        font-family: Arial, sans-serif;
+    }
+    
+    .container {
+        max-width: 500px;
+        margin: 100px auto;
+        padding: 20px;
+        background-color: #333;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    h2 {
+        text-align: center;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: #444;
+        color: #fff;
+    }
+    
+    button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    #supportForm{
+        margin-right: 20px;
+    }
+    
+</style>
+<body>
+    <div id="loading-spinner"></div>
+    <div class="container">
+        <h2>Support Form</h2>
+        <form id="supportForm">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="issue">Issue:</label>
+                <textarea id="issue" name="issue" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+    <script>
+        var spinner = null;
+        function hideLoadingAnimation() {
+            if (spinner !== null) {
+                spinner.stop();
+            }
+        }
+        
+        function showLoadingAnimation() {
+            var target = document.getElementById('loading-spinner');
+            var opts = {
+                lines: 13,
+                length: 28,
+                width: 14,
+                radius: 42,
+                scale: 1,
+                corners: 1,
+                color: '#ffffff',
+                fadeColor: 'transparent',
+                speed: 1,
+                rotate: 0,
+                animation: 'spinner-line-fade-quick',
+                direction: 1,
+                zIndex: 2e9,
+                className: 'spinner',
+                top: '50%',
+                left: '50%',
+                shadow: '0 0 1px transparent',
+                position: 'absolute'
+            };
+            spinner = new Spinner(opts).spin(target);
+        }
+
+        document.getElementById('supportForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+        
+            // Get form values
+            var username = document.getElementById('username').value;
+            var issue = document.getElementById('issue').value;
+            var email = document.getElementById('email').value;
+        
+            // Construct the data object
+            var formData = {
+                username: username,
+                issue: issue,
+                email: email
+            };
+        
+            // Send form data to server using Fetch API
+            showLoadingAnimation();
+            fetch('/send_support_query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    hideLoadingAnimation();
+                    alert('Issue successful. You will get a reply back soon!');
+                    document.getElementById('supportForm').reset();
+                } else {
+                    hideLoadingAnimation();
+                    alert('Failed to submit form data');
+                }
+            })
+            .catch(error => {
+                hideLoadingAnimation();
+                alert('Error:', error);
+            });
+        });
+        
+        
+    </script>
+</body>
+</html>

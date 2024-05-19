@@ -1,0 +1,13 @@
+{
+    "installed": {
+        "client_id": "474005659133-88buq9mo69rvkmf21ri9pdmo7jcj5vr9.apps.googleusercontent.com",
+        "project_id": "lan-chatting",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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",
+        "redirect_uris": [
+            "http://localhost"
+        ]
+    }
+}

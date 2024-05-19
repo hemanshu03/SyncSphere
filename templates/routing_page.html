@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/landing.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+    <title>SyncSphere</title>
+</head>
+<style>
+    html{
+        /*background: linear-gradient(to bottom, #000000, #4c0776, #7800c1);*/
+        background-image: url("{{ url_for('static', filename='images/home_bkg.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        position: relative;
+    }
+</style>
+
+<body>
+    <div id="customContextMenu"></div>
+    <header>
+        <h1>SyncSphere</h1>
+        <div id="logo">
+            <img id="logoImage" src="{{ url_for('static', filename='images/routing.png') }}" alt="Logo">
+        </div>
+        <form method="post">
+            <button type="submit" name="Login-btn" id="login">Login</button>
+            <button type="submit" name="create-btn" id="create-account">Create Account</button>
+        </form>
+    </header>
+    <main>
+        <div id="info">
+            <p style="font-size: 18px; font-weight: bold;">Welcome to SyncSphere, where connectivity meets simplicity!
+                Explore a seamless chatting experience with these user-friendly features:</p>
+
+            <ul>
+                <li>
+                    <strong>Local Chats:</strong> Connect effortlessly within your local network! Whether you're at
+                    home,
+                    in the office, or anywhere with the same LAN/WLAN, our platform lets you chat with friends or
+                    colleagues hassle-free.
+                </li>
+
+                <li>
+                    <strong>Faster and Smoother Conversations:</strong> Say goodbye to long waiting times! Unlike
+                    traditional chatting, our platform minimizes data travel distances, ensuring your messages reach
+                    their destination swiftly. Enjoy instant communication without the lag!
+                </li>
+
+                <li>
+                    <strong>Versatile Communication:</strong> Dive into a world of diverse communication options:
+                    <ul>
+                        <li><strong>Video Calling:</strong> Engage in face-to-face conversations, either one-on-one or
+                            in a group setting.</li>
+                        <li><strong>Room or Individual Chats:</strong> Tailor your conversations to your preference,
+                            whether it's a lively group discussion or a private one-on-one chat.</li>
+                        <li><strong>File Sharing:</strong> Share files effortlessly! Our platform supports PDFs, images,
+                            videos, and various document formats, allowing you to exchange files up to 50 MB seamlessly.
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <strong>Top-notch Security:</strong> Your privacy is our priority! Our platform adheres to the
+                    latest security standards, ensuring a secure environment for all your conversations. Chat with
+                    confidence, knowing that your data is protected.
+                </li>
+            </ul>
+
+            <p>Experience the future of chatting – simple, fast, and secure! Join us and elevate your communication to
+                new heights.</p>
+        </div>
+        <div id="images">
+            <p>Some Images of the final product</p>
+        </div>
+    </main>
+    <div id="centered_border"></div>
+    <footer>
+        <div id="contact">
+            <label>Address:</label>
+            <Address>
+                <p>School of Computer Engineering and Technology,<br>MIT World Peace University,<br>Rambaug Colony,
+                    Kothrud,<br>Pune, Maharashtra, India.
+                </p>
+            </Address>
+        </div>
+        <form method='POST'>
+            <button type="submit" name="support" id="support" onclick="support_form()">Support form</button>
+        </form>
+    </footer>
+
+
+    <script>
+        document.addEventListener('click', function () {
+            const customContextMenu = document.getElementById('customContextMenu');
+            customContextMenu.style.display = 'none';
+        });
+        function support_form() {
+            socket.emit('support_redirect_req')
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>LAN Web-Chatting App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+
+<body onload="areCookiesEnabled()">
+    <noscript>
+        <p>JavaScript is disabled. Please enable JavaScript to continue.</p>
+        <!-- You can include a meta refresh tag to redirect users to another page -->
+        <meta http-equiv="refresh" content="0;url=/nojs">
+    </noscript>
+    <div class="info-panel" style="font-size: larger;">
+        <h1 style="text-align: center;">Welcome to LAN Web-Chatting App</h1>
+        <p>This app allows users to chat and share files over LAN/WLAN connection and aims to provide a secure, fast,
+            and stable service for organizations.</p>
+        <ul style="font-family: Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;">Note: <br>
+            <li>Any illegal use of this app is prohibited</li>
+            <li>Users are always under AI moderation.</li>
+        </ul>
+    </div>
+    <div class="login-panel">
+        <h2 style="font-size: x-large; text-align: center;">Login</h2>
+        <form method="post">
+            <input type="text" id="username" name="username" placeholder="Username *" required autocomplete="on" autofill="on">
+            <div style="position: relative;"> 
+                <input type="password" id="password" name="password" placeholder="Password *" required autocomplete="on" autofill="on">
+                <input type="checkbox" onclick="togglePasswordVisibility()"> Show Password
+                <a onclick="forgot_password()" style="color: white; float: right; cursor: pointer; text-decoration: underline;">Forgot Password?</a>
+            </div>
+
+            <span>
+                <label_captcha style="font-size: large;">Captcha: </label_captcha>
+                <span><img id="captchaImage" src="data:image/png;base64,{{ captcha_image }}" alt="Captcha Image">
+                    <button type="button" id="refresh_cptch" onclick="refreshCaptcha()">Refresh Captcha</button></span>
+            </span>
+                            
+            <input type="text" id="captcha" name="captcha" placeholder="Enter Captcha *" required oninput="this.value = this.value.toUpperCase()">
+            <button type="button" id="login-btn" value="Login" name="L-ogin" onclick="ced()"> Login </button>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.0.2/sha.js"></script>
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+    <script>
+        document.getElementById("captcha").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+              event.preventDefault(); // Prevent default behavior of the Enter key (e.g., form submission)
+              document.getElementById("login-btn").click(); // Simulate a click on the button
+            }
+        });
+    </script>
+</body>
+
+</html>

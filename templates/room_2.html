@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/room_lander.css') }}">
+</head>
+
+<body>
+    <noscript>
+        <p>JavaScript is disabled. Please enable JavaScript to continue.</p>
+        <meta http-equiv="refresh" content="0;url=/nojs">
+    </noscript>
+    <div id="side-menu" class="animate__animated animate__slideInLeft">
+        <form id="roomOptions">
+            {% for room in rooms %}
+            <div class="room-option">
+                <label class="room_name" for="{{ room }}">{{ room }}</label>
+                <input class="room_name" type="radio" id="{{ room }}" name="roomOption" value="{{ room }}"
+                    onclick="updateRoomName(this)">
+            </div>
+            {% endfor %}
+        </form>
+    </div>
+
+    <span id="menu-btn" onclick="toggleSideMenu()">&#9776; Show all rooms</span>
+
+    <form id="room_selector" class="animate__animated animate__fadeIn">
+        <label style="text-align: center; font-size:20px; user-select: none;">Select a room from the side menu or create
+            your own
+            room</label>
+        <div id="detail-input">
+            <input class="room_details" style="text-align: center;" type="text" id="roomName" name="roomName"
+                placeholder="Room name (No spaces) *" required>
+            <input class="room_details" style="text-align: center;" type="password" id="Password" name="password"
+                placeholder="Room Password *" required>
+            <input id="check-box" type="checkbox" style="cursor: pointer;" onclick="togglePasswordVisibility()">
+            <label for="check-box" style="user-select: none; cursor: pointer;">Show Password</label>
+        </div>
+        <button type="button" id="joincre-btn" name="join-create" onclick="room_handler()">Create
+            Room</button>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
+    <script>
+        localStorage.setItem('user', '{{ user }}');
+        var sideMenu = document.getElementById('side-menu');
+        var menuBtn = document.getElementById('menu-btn');
+        var form = document.getElementById('room_selector');
+        var socket = io.connect('https://' + document.domain + ':' + location.port);
+        var roomNameInput = document.getElementById('roomName');
+        
+        document.getElementById("Password").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+              event.preventDefault(); // Prevent default behavior of the Enter key (e.g., form submission)
+              document.getElementById("joincre-btn").click(); // Simulate a click on the button
+            }
+        });
+
+        function hashString(str) {
+            return CryptoJS.SHA256(str).toString(CryptoJS.enc.Hex);
+        }
+
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById("Password");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        }
+
+        function resetPage() {
+            sessionStorage.removeItem('room_code');
+            document.getElementById('roomName').value = '';
+            document.getElementById('Password').value = '';
+            var roomOptions = document.querySelectorAll('input[name="roomOption"]');
+            roomOptions.forEach(function (option) {
+                option.checked = false;
+            });
+            var loginBtn = document.getElementById('joincre-btn');
+            loginBtn.textContent = 'Create Room';
+        }
+
+        window.onload = function () {
+            resetPage();
+            var screenWidth = window.innerWidth;
+            if (screenWidth < 985) {
+                var sideMenu = document.getElementById('side-menu');
+                sideMenu.style.width = '0';
+                form.style.marginLeft = '0px';
+                var menuBtn = document.getElementById('menu-btn');
+                menuBtn.innerHTML = '&#9776; Show all rooms';
+            }
+            if (screenWidth > 985) {
+                var sideMenu = document.getElementById('side-menu');
+                sideMenu.style.width = '250px';
+                form.style.marginLeft = '100px';
+                var menuBtn = document.getElementById('menu-btn');
+                menuBtn.innerHTML = '&#10005; Close';
+            }
+        };
+
+        roomNameInput.addEventListener('input', function () {
+            var roomName = roomNameInput.value.trim();
+            var inputValue = event.target.value;
+            var trimmedValue = inputValue.replace(/\s/g, '');
+
+            if (trimmedValue.length > 20) {
+                trimmedValue = trimmedValue.substring(0, 20);
+            }
+
+            event.target.value = trimmedValue;
+            socket.emit('check_room', { 'room_name': roomName });
+        });
+
+        window.addEventListener('resize', function () {
+            var screenWidth = window.innerWidth;
+            if (screenWidth < 985) {
+                var sideMenu = document.getElementById('side-menu');
+                sideMenu.style.width = '0';
+                form.style.marginLeft = '0px';
+                var menuBtn = document.getElementById('menu-btn');
+                menuBtn.innerHTML = '&#9776; Show all rooms';
+            }
+            if (screenWidth > 985) {
+                var sideMenu = document.getElementById('side-menu');
+                sideMenu.style.width = '250px';
+                form.style.marginLeft = '100px';
+                var menuBtn = document.getElementById('menu-btn');
+                menuBtn.innerHTML = '&#10005; Close';
+            }
+        });
+
+        function toggleSideMenu() {
+            if (sideMenu.style.width === '250px') {
+                sideMenu.style.width = '0';
+                form.style.marginLeft = '0px';
+                menuBtn.innerHTML = '&#9776; Show all rooms';
+            } else {
+                sideMenu.style.width = '250px';
+                form.style.marginLeft = '100px';
+                menuBtn.innerHTML = '&#10005; Close';
+            }
+        }
+
+        async function generateAesKey(password_) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password_);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = new Uint8Array(hashBuffer);
+            const aesKey = hashArray.slice(0, 32);
+            const keyString = Array.from(aesKey).join(',');
+            
+            localStorage.setItem('key', keyString);
+            
+            return hashBuffer;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            window.updateRoomName = function (radio) {
+                document.getElementById('roomName').value = radio.value;
+                toggleCreateJoin();
+            }
+
+            window.toggleCreateJoin = function () {
+                var roomOption = document.querySelector('input[name="roomOption"]:checked');
+                var loginBtn = document.getElementById('joincre-btn');
+                if (roomOption) {
+                    loginBtn.textContent = 'Join Room';
+                } else {
+                    loginBtn.textContent = 'Create Room';
+                }
+            }
+        });
+
+        function getRoomNames() {
+            var roomNames = [];
+            var roomOptions = document.querySelectorAll('input[name="roomOption"]');
+            roomOptions.forEach(function (option) {
+                roomNames.push(option.value);
+            });
+            return roomNames;
+        }
+
+        async function validateForm() {
+            var roomName = document.getElementById('roomName').value.trim();
+            var roomOption = document.querySelector('input[name="roomOption"]:checked');
+            var password_v = hashString(document.getElementById('Password').value);
+            var password_ = document.getElementById('Password').value.trim();
+            var room_h_button = document.getElementById('joincre-btn').textContent;
+
+            var pass_res = await check_pass();
+
+            if (!password_) {
+                alert("Please fill 'Password' field first before continuing");
+                return false;
+            }
+            if (!roomOption && !roomName) {
+                alert("Please fill 'Room Name' field first before continuing");
+                return false;
+            }
+            if (roomName.length < 5) {
+                alert("Put at least 5 characters for room name.");
+                return false;
+            }
+            if (pass_res === false) {
+                alert("Incorrect room password.");
+                return false;
+            }
+            if (pass_res === null) {
+                if (room_h_button === "Create Room") {
+                    return null
+                }
+                alert("Room does not exist");
+                return false;
+            }
+            if (password_ && (roomOption || roomName) && (pass_res === true)) {
+                await generateAesKey(password_v);
+                return true;
+            }
+        }
+
+        async function check_pass() {
+            var password_v = hashString(document.getElementById('Password').value);
+            var roomName = document.getElementById('roomName').value;
+            var data = {
+                'room': roomName,
+                'password': password_v
+            };
+
+            try {
+                const response = await fetch('/check_room_pass', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const jsonData = await response.json();
+                    return jsonData.result;
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            } catch (error) {
+                alert('Error: ' + error);
+            }
+        }
+
+        async function room_handler() {
+            var roomList = getRoomNames();
+            var roomOption = document.getElementById('roomName').value;
+            const result_room = await validateForm();
+            if (result_room === true) {
+                localStorage.setItem('room_code', roomOption);
+                //socket.emit('password_checker_room', {password_stats: 'check_pass_success'});
+                //window.location.href = "/room/" + roomOption;
+                gtg();
+            } if (result_room === null) {
+                window.location.href = "/room/create/" + roomOption;
+            }
+        }
+
+        function gtg(){
+            var roomOption = document.getElementById('roomName').value;
+            fetch('/password_checker_room', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    room_code: roomOption,
+                    password_stats: 'check_pass_success'
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = "/room/" + roomOption;
+            })
+            .catch((error) => {
+                alert('Error:', error);
+            });
+        }
+
+        socket.on('room_existence', function (data) {
+            var loginBtn = document.getElementById('joincre-btn');
+            if (data.exists) {
+                loginBtn.textContent = 'Join Room';
+            } else {
+                loginBtn.textContent = 'Create Room';
+            }
+        });
+
+        socket.on('redirect_request_return_for_create_room', function (data) {
+            if (data === "Exists") {
+                alert("Room name already exist (If not on your side, maybe on some other user's side). Please try something else.")
+            } else {
+                window.location.href = "/room/" + data;
+            }
+        });
+    </script>
+</body>
+
+</html>
+

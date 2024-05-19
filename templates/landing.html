@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/landing.css') }}">
+    <title>SyncSphere | Home</title>
+    
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/site_logof.png') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lugrasimo&display=swap" rel="stylesheet">
+</head>
+<style>
+    html {
+        /*background: linear-gradient(to bottom, #000000, #4c0776, #7800c1);*/
+        background-image: url("{{ url_for('static', filename='images/home_bkg.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        position: relative;
+    }
+
+    .slides {
+        display: none;
+    }
+
+    /* Style the slideshow container */
+    #slideshow-container {
+        position: relative;
+        max-width: 100%;
+        margin: auto;
+    }
+</style>
+
+<body>
+    <div id="customContextMenu"></div>
+    <header>
+        <h1>SyncSphere</h1>
+        <div id="logo">
+            <img id="logoImage" src="{{ url_for('static', filename='images/site_logof.png') }}" alt="Logo">
+        </div>
+        <form method="post">
+            <button name="Login-btn" id="login">{{login_but}}</button>
+            <button name="create-btn" id="create-account">Create Account</button>
+        </form>
+    </header>
+    <main>
+        <div id="info">
+            <ul style="list-style: none; padding: 0;">
+                <li style="font-size: 24px; font-weight: bold; margin-bottom: 16px;">Unleash the Power of Unified
+                    Communication: Welcome to Syncsphere</li>
+                <li style="line-height: 1.5; margin-bottom: 16px;">Transform the way you work with Syncsphere. Our
+                    intuitive web-based platform is designed to elevate communication and empower seamless
+                    collaboration. It's more than just chat - it's a hub for real-time interaction, centralized
+                    discussions, and keeping everyone on the same page.</li>
+                <li style="line-height: 1.5; margin-bottom: 16px;">Break down silos and foster a collaborative spirit.
+                    Syncsphere connects you with colleagues across departments and locations, making knowledge exchange
+                    and building strong professional networks effortless.</li>
+                <li style="line-height: 1.5; margin-bottom: 16px;">Streamline workflows, centralize communication, and
+                    say goodbye to scattered information. Syncsphere empowers you to maximize your time and effort with
+                    powerful search functionalities and real-time notifications that keep you on top of everything.</li>
+                <li style="line-height: 1.5; margin-bottom: 16px;">Join a vibrant global community of professionals who
+                    share your commitment to excellence. Engage in industry-specific discussions, collaborate across
+                    borders, and gain valuable insights from a vast pool of talent.</li>
+                <li style="margin-top: 24px;">**Experience the Syncsphere Advantage:**</li>
+                <ul style="list-style: disc; padding-left: 20px;">
+                    <li>Effortless Collaboration: Seamless communication and real-time project management tools keep
+                        your team in sync.</li>
+                    <li>Powerful Connections: Build strong professional networks and foster a collaborative spirit.</li>
+                    <li>Unmatched Productivity: Streamlined workflows and centralized information empower you to achieve
+                        more.</li>
+                    <li>Global Network: Tap into a vast community of industry peers and thought leaders.</li>
+                </ul>
+                <li style="line-height: 1.5; margin-top: 16px;">Revolutionize the way you work and communicate. Sign up
+                    for Syncsphere today.</li>
+            </ul>
+        </div>
+        <div id="images">
+            <div id="slideshow-container">
+                <img class="slides" src="{{ url_for('static', filename='images/Lander_show/l1.png') }}" alt="Slide 1">
+                <img class="slides" src="{{ url_for('static', filename='images/Lander_show/l2.png') }}" alt="Slide 2">
+                <img class="slides" src="{{ url_for('static', filename='images/Lander_show/ri.png') }}" alt="Slide 3">
+                <img class="slides" src="{{ url_for('static', filename='images/Lander_show/ri2.png') }}" alt="Slide 4">
+                <img class="slides" src="{{ url_for('static', filename='images/Lander_show/ri3.png') }}" alt="Slide 5">
+                <img class="slides" src="{{ url_for('static', filename='images/Lander_show/ri4.png') }}" alt="Slide 6">
+                <img class="slides" src="{{ url_for('static', filename='images/Lander_show/ri5.png') }}" alt="Slide 7">
+                <img class="slides" src="{{ url_for('static', filename='images/Lander_show/ri6.png') }}" alt="Slide 8">
+                <img class="slides" src="{{ url_for('static', filename='images/Lander_show/ri7.png') }}" alt="Slide 9">
+                <img class="slides" src="{{ url_for('static', filename='images/Lander_show/ri8.png') }}" alt="Slide 10">
+                <img class="slides" src="{{ url_for('static', filename='images/Lander_show/ri9.png') }}" alt="Slide 11">
+                <img class="slides" src="{{ url_for('static', filename='images/Lander_show/rl1.png') }}" alt="Slide 12">
+            </div>
+        </div>
+    </main>
+    <div id="centered_border"></div>
+    <footer>
+        <div id="contact">
+            <div style="display: flex; align-items: center;">
+                <span style="margin-right: 10px;">
+                    <h2 style="font-family: Candara; font-weight: 100; font-style: Italic;">A part of</h2>
+                </span>
+                <h3 style="font-family: 'Lugrasimo', cursive;">Innovique</h3>
+            </div>
+            <h4 style="font-weight: 100; font-style: italic; font-family: Lugrasimo; font-size: small;">Vision to Reality, Innovation to Possibility.</h4>
+            <label style="font-weight: 100;">A Company Situated in </label>
+            <Address>
+                <p style="font-weight: 100;">Maharashtra, India.</p>
+            </Address>
+        </div>
+        <form method='POST'>
+            <button type="submit" name="support" id="support" onclick="support_form()">Support form</button>
+        </form>
+    </footer>
+
+
+    <script>
+        document.addEventListener('click', function () {
+            const customContextMenu = document.getElementById('customContextMenu');
+            customContextMenu.style.display = 'none';
+        });
+        function support_form() {
+            socket.emit('support_redirect_req')
+        }
+        var slideIndex = 0;
+        carousel();
+
+        function carousel() {
+            var i;
+            var slides = document.getElementsByClassName("slides");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1 }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(carousel, 2000); // Change image every 2 seconds (adjust as needed)
+        }        
+    </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room - {{ code }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/room_inside.css') }}">
+</head>
+
+<body>
+    <div id="side-menu">
+        {% for room in rooms %}
+        <a onclick="changeroom('{{ room }}')">{{ room }}</a>
+        {% endfor %}
+    </div>
+
+    <span id="menu-btn" onclick="toggleSideMenu()">&#9776; Show all rooms</span>
+
+    <div class="centered-container">
+        <h1 class="animate__animated animate__fadeInDown" id="room-header"> Room -<label id="header-code">{{ code
+                }}</label></h1>
+    </div>
+
+    <div class="messages animate__animated animate__fadeInUp" id="message-box">
+        {% for message in messages %}
+        <div class="message-container" id="{{ message.message_id }}">
+            {% if message.name == user %}
+            <div class="message-current-user">
+                <div class="message-current">
+                    <strong class="user_name" , Optima, Arial, sans-serif;">{{ message.name }}<br></strong>
+                    <br><label class="msg" style="user-select: text; margin-bottom: 30px;"
+                        id="msg{{ message.message_id }}"> </label><br>
+                    <span class="muted" style="float: right; color: #41ff00;">
+                        <button class="delete-btn" onclick="delete_msg_event(this)" title="Delete This Message"
+                            style="background-color: transparent; border: none; cursor: pointer;">
+                            <img src="{{ url_for('static', filename='images/delete.png') }}" alt="Icon"></button>|
+                        <button class="translate-btn" onclick="translate_text(this)"
+                            title="Translate This Message to English"
+                            style="background-color: transparent; border: none; cursor: pointer;">
+                            <img src="{{ url_for('static', filename='images/translate.png') }}" alt="Icon"></button>| {{
+                        message.timestamp }}</span>
+                </div>
+            </div>
+            {% else %}
+            <div class="message-other-user">
+                <div class="message-other">
+                    <strong class="user_name" , Optima, Arial, sans-serif;">{{ message.name }}<br></strong>
+                    <br><label class="msg" style="user-select: text;" id="msg{{ message.message_id }}"> </label><br>
+                    <span class="muted" style="float: right; color: #00ecff;">
+                        <button class="delete-btn" onclick="delete_msg_event(this)" title="Delete This Message"
+                            style="background-color: transparent; border: none; cursor: pointer;">
+                            <img src="{{ url_for('static', filename='images/delete.png') }}" alt="Icon"></button>|
+                        <button class="translate-btn" onclick="translate_text(this)"
+                            title="Translate This Message to English"
+                            style="background-color: transparent; border: none; cursor: pointer;">
+                            <img src="{{ url_for('static', filename='images/translate.png') }}" alt="Icon"></button>| {{
+                        message.timestamp }}</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <form id="message-form" method="POST" enctype="multipart/form-data">
+        <input style="margin-bottom: 10px;" type="file" name="files[]" class="custom-button" multiple>
+        <input style="margin-bottom: 10px;" type="submit" value="Upload" class="custom-button" onclick="sendFile()">
+        <button type="button" class="custom-button" id="showFilesBtn" onclick="showFiles()">Show Files in this
+            room</button>
+        <input type="text" id="message-input" placeholder="Type your message here, {{user}}"
+            onkeypress="handleKeyPress(event)">
+        <button type="button"
+            style="cursor: pointer; margin-left: 5px; font-weight: bolder; color: white; background-color: rgb(0, 140, 255); border: none; padding: 7px; width: 70px"
+            onclick="sendMessage()">Send
+        </button>
+    </form>
+
+    <div id="fileModal">
+        <div id="fileContent">
+            <span class="close" onclick="closeFilesModal()">&times;</span>
+            <h2 style="color: orange;">Files in the Room</h2>
+            <label id="file_count"></label>
+            <div id="container">
+                <div id="fileList"></div>
+            </div>
+            <a href="multiple/{{ code }}" download>
+                <button id="download-multiple" class="download-multiple">Download
+                    selected
+                    files
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/room_handler_JS_original.js') }}"></script>
+    <script>
+        function store_creds() {
+            localStorage.setItem("room_code", "{{code}}");
+            room_code = localStorage.getItem('room_code');
+            localStorage.setItem("user", "{{user}}");
+            showFiles(0);
+            socket.emit('here_it_is', (localStorage.getItem('room_code')));
+        }
+
+        const del_ico = "{{ url_for('static', filename='images/delete.png') }}";
+        const translate_ico = "{{ url_for('static', filename='images/translate.png') }}";
+
+        window.onload = async function () {
+            console.log('%cAttention!', 'font-size: 80px; font-weight: bold; color: red;');
+            console.log('%cImportant Notice: Please refrain from accessing developer options or modifying the code of this website. Doing so may compromise your security and the integrity of the site. Please go through the terms and conditions to use of website on the home page for more information. If you have any questions or concerns, please contact our support team for assistance at "noreply.lanchatting@gmail.com"', 'font-size: 20px; font-weight: normal; color: orange;');
+
+            {% for message in messages %}
+            var ciphertext = "{{ message.message }}";
+            var decryptedMessage = await aesDecrypt(ciphertext);
+            document.getElementById("msg{{ message.message_id }}").innerText = decryptedMessage;
+            {% endfor %}
+        }
+
+    </script>
+</body>
+
+</html>
