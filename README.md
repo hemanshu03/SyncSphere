@@ -14,3 +14,9 @@
 	 		1. Addition of Audio-Video Calling using Web-RTC.
 			2. Addition of Page for room creation.
    			3. Give users access to admin consoles to control the rooms they create or rooms for which they have been elected as admin.
+		3. Convert the Frontend to React.JS
+  		4. Improve logic at backend. It is very shit and unoptimized.
+    		5. Use JWT authentication for authenticating users.
+      		6. Try and use SQLite databases for users.
+		7. Version controlling for APIs is required.
+  		8. More to come in testing...
