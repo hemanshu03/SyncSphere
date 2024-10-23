@@ -1,0 +1,14 @@
+Flask
+Flask-SocketIO
+Flask-Session
+Werkzeug
+python-multipart
+pymongo
+cryptography
+Pillow
+requests
+beautifulsoup4
+langdetect
+langcodes
+mtranslate
+email-validator
