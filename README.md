@@ -61,9 +61,9 @@ SyncSphere is a work in progress, but it's already shaping up to be a self-conta
 - I have also published a Research Paper on this project. Have a look:
     - https://ijircce.com/admin/main/storage/app/pdf/RB1zdyNENUYOHQNrd3yfi0iX2rc1IMwbZl1988Up.pdf
 - Here is the Project Summary:
-    - Link to files stored in this GitHub Repo itself[https://github.com/hemanshu03/SyncSphere/blob/public-view/SyncSphere%20project%20summary.pdf]
+    - https://github.com/hemanshu03/SyncSphere/blob/public-view/SyncSphere%20project%20summary.pdf
 - Here is the Certificate of Publication:
-    - Link to files stored in this GitHub Repo itself[https://github.com/hemanshu03/SyncSphere/blob/public-view/Certificate%20For%20Publication%20in%20IJIRCCE%20-%20SyncSphere.pdf]
+    - https://github.com/hemanshu03/SyncSphere/blob/public-view/Certificate%20For%20Publication%20in%20IJIRCCE%20-%20SyncSphere.pdf
 
 ---
 
