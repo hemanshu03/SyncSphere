@@ -1,6 +1,0 @@
-Server configuration:
-Secret key: b'\xe2\xf3\xbd\x8b\x06\xea\xea\x06;A\xa5\xe7`\xb4\xfa\x12'
-Session cookie secure?= True
-Session cookie expires?= False
- Session cookie configuration: Strict
-Session Type: filesystem

@@ -1,6 +1,0 @@
-Server configuration:
-Secret key: b'\x11]&\x82\x14$)\xbe\xb2*\xd9=\x070\x96\xf2'
-Session cookie secure?= True
-Session cookie expires?= False
- Session cookie configuration: Strict
-Session Type: filesystem
