@@ -58,7 +58,7 @@ Built using **Python (Flask)**, SyncSphere offers a customizable backend, secure
 
 SyncSphere is a work in progress, but it's already shaping up to be a self-contained, secure chat system for private networks. Ideal for those who value **privacy**, **control**, and **customization**.
 
-> 💡 **I have also published a Research Paper on this project. Have a look: ** https://ijircce.com/admin/main/storage/app/pdf/RB1zdyNENUYOHQNrd3yfi0iX2rc1IMwbZl1988Up.pdf[Link to IJIRCCE Paper Storage]
+> 💡 **I have also published a Research Paper on this project. Have a look: ** https://ijircce.com/admin/main/storage/app/pdf/RB1zdyNENUYOHQNrd3yfi0iX2rc1IMwbZl1988Up.pdf
 
 ---
 
